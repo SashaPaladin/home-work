@@ -27,6 +27,21 @@ class CalculatorTest {
     }
 
     @Test
+    void getPow() {
+        assertEquals(256, new Calculator().getPow(2, 8));
+    }
+
+    @Test
+    void getAbs() {
+        assertEquals(49, new Calculator().getAbs(-49));
+    }
+
+    @Test
+    void getMod() {
+        assertEquals(2, new Calculator().getMod(8, 3));
+    }
+
+    @Test
     void classHasSevenMethods() {
         assertEquals(7, Calculator.class.getMethods().length - Object.class.getMethods().length);
     }
