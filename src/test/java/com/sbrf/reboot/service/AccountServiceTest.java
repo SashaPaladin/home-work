@@ -54,6 +54,32 @@ class AccountServiceTest {
     }
 
     @Test
+    void cardExist() {
+        Set<Long> cards = new HashSet();
+        cards.add(2000_0000_0000_0000L);
+
+        long contractNumber = 111L;
+        long card = 2000_0000_0000_0000L;
+
+        when(accountRepository.getAllCardsByContractNumber(contractNumber)).thenReturn(cards);
+
+        assertTrue(accountService.isContractHasCard(contractNumber, card));
+    }
+
+    @Test
+    void cardNotExist() {
+        Set<Long> cards = new HashSet();
+        cards.add(2000_0000_0000_0000L);
+
+        long contractNumber = 111L;
+        long card = 2200_0000_0000_0000L;
+
+        when(accountRepository.getAllCardsByContractNumber(contractNumber)).thenReturn(cards);
+
+        assertFalse(accountService.isContractHasCard(contractNumber, card));
+    }
+
+    @Test
     void repositoryHasTreeMethods() {
         assertEquals(2, AccountRepository.class.getMethods().length);
     }
