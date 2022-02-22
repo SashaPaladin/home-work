@@ -24,6 +24,7 @@ class CustomerH2RepositoryTest {
 
         List<Customer> all = customerRepository.getAll();
 
+        assertTrue(tomCreated);
         assertTrue(all.size() != 0);
     }
 
