@@ -9,8 +9,6 @@ import java.util.List;
 
 public class CustomerH2Repository implements CustomerRepository {
 
-    private Connection connection;
-
     public CustomerH2Repository() {
         try {
             String JDBC_DRIVER = "org.h2.Driver";
@@ -21,7 +19,7 @@ public class CustomerH2Repository implements CustomerRepository {
 
     }
 
-    private Connection getConnection () throws SQLException {
+    private Connection getConnection() throws SQLException {
         String DB_URL = "jdbc:h2:~/my_db";
         String USER = "sa";
         String PASS = "";
@@ -30,11 +28,10 @@ public class CustomerH2Repository implements CustomerRepository {
 
     @Override
     public List<Customer> getAll() {
-        List<Customer> customers = new ArrayList<>();
-        try {
-            connection = getConnection();
+        try (Connection connection = getConnection()) {
             Statement stat = connection.createStatement();
             ResultSet rs = stat.executeQuery("select * from CUSTOMER");
+            List<Customer> customers = new ArrayList<>();
             while (rs.next()) {
                 customers.add(new Customer(
                         rs.getLong(1),
@@ -46,14 +43,13 @@ public class CustomerH2Repository implements CustomerRepository {
             return customers;
         } catch (SQLException e) {
             e.printStackTrace();
-            return customers;
+            return new ArrayList<>();
         }
     }
 
     @Override
     public boolean createCustomer(String name, String eMail) {
-        try {
-            connection = getConnection();
+        try (Connection connection = getConnection()) {
             PreparedStatement pStat = connection.prepareStatement("insert into CUSTOMER (NAME, EMAIL) values (?, ?)");
             pStat.setString(1, name);
             pStat.setString(2, eMail);
